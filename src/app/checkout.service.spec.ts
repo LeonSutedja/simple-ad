@@ -22,18 +22,27 @@ describe('CheckoutService', () => {
   });
 
   it('CheckoutCalculator should sum all advertisements for default customer', () => {
+    // setup
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
+
     // default customer type is of id 11
     let customer = CUSTOMERS.find(c => c.id === 11)!;
     cart.setCustomer(customer);
+
     let normalAd = ADVERTISEMENTS.find(ad => ad.id === 11)!;
     let stdOutAd = ADVERTISEMENTS.find(ad => ad.id === 12)!;
     let premiumAd = ADVERTISEMENTS.find(ad => ad.id === 13)!;
     cart.addAdvertisement(normalAd);
     cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
     cart.addAdvertisement(premiumAd);
+
+    // act
     let total = calculator.total(cart);
-    expect(total).toEqual(normalAd.price + stdOutAd.price + premiumAd.price);
+
+    // assert
+    expect(total).toEqual(normalAd.price + (stdOutAd.price * 3) + premiumAd.price);
   });
 });
