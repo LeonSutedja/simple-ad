@@ -4,17 +4,23 @@ import { AdvertisementService } from './advertisement.service';
 import { CheckoutService } from './checkout.service';
 import { ADVERTISEMENTS } from './data/mock-advertisement';
 import { CUSTOMERS } from './data/mock-customers';
+import { Advertisement } from './model/advertisement';
 import { CheckoutCalculator } from './model/checkoutCalculator';
 import { ShoppingCart } from './model/shoppingCart';
 
 describe('CheckoutService', () => {
   let service: CheckoutService;
-  let advertisementService: AdvertisementService;
+  let normalAd: Advertisement;
+  let stdOutAd: Advertisement;
+  let premiumAd: Advertisement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(CheckoutService);
-    advertisementService = TestBed.inject(AdvertisementService);
+
+    normalAd = ADVERTISEMENTS.find(ad => ad.id === 11)!;
+    stdOutAd = ADVERTISEMENTS.find(ad => ad.id === 12)!;
+    premiumAd = ADVERTISEMENTS.find(ad => ad.id === 13)!;
   });
 
   it('should be created', () => {
@@ -30,9 +36,6 @@ describe('CheckoutService', () => {
     let customer = CUSTOMERS.find(c => c.id === 11)!;
     cart.setCustomer(customer);
 
-    let normalAd = ADVERTISEMENTS.find(ad => ad.id === 11)!;
-    let stdOutAd = ADVERTISEMENTS.find(ad => ad.id === 12)!;
-    let premiumAd = ADVERTISEMENTS.find(ad => ad.id === 13)!;
     cart.addAdvertisement(normalAd);
     cart.addAdvertisement(stdOutAd);
     cart.addAdvertisement(stdOutAd);
@@ -55,9 +58,6 @@ describe('CheckoutService', () => {
     let customer = CUSTOMERS.find(c => c.id === 13)!;
     cart.setCustomer(customer);
 
-    let normalAd = ADVERTISEMENTS.find(ad => ad.id === 11)!;
-    let stdOutAd = ADVERTISEMENTS.find(ad => ad.id === 12)!;
-    let premiumAd = ADVERTISEMENTS.find(ad => ad.id === 13)!;
     cart.addAdvertisement(normalAd);
     cart.addAdvertisement(stdOutAd);
     cart.addAdvertisement(stdOutAd);
@@ -69,5 +69,94 @@ describe('CheckoutService', () => {
 
     // assert
     expect(total).toEqual(normalAd.price + (299.99 * 3) + premiumAd.price);
+  });
+
+  it('CheckoutCalculator should discount premium advertisements for MYER', () => {
+    // setup
+    let calculator = new CheckoutCalculator();
+    let cart = new ShoppingCart();
+
+    // axilCoffeeRoasters customer type is of id 13
+    let customer = CUSTOMERS.find(c => c.id === 14)!;
+    cart.setCustomer(customer);
+
+    cart.addAdvertisement(normalAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(premiumAd);
+    cart.addAdvertisement(premiumAd);
+
+    // act
+    let total = calculator.total(cart);
+
+    // assert
+    expect(total).toEqual(normalAd.price + (stdOutAd.price * 3) + (389.99 * 2));
+  });
+
+  it('CheckoutCalculator should do 5 for 4 deals on stand out advertisements for MYER', () => {
+    // setup
+    let calculator = new CheckoutCalculator();
+    let cart = new ShoppingCart();
+
+    // axilCoffeeRoasters customer type is of id 13
+    let customer = CUSTOMERS.find(c => c.id === 14)!;
+    cart.setCustomer(customer);
+
+    cart.addAdvertisement(normalAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+
+    cart.addAdvertisement(stdOutAd);
+
+    // act
+    let total = calculator.total(cart);
+
+    // assert
+    expect(total).toEqual(normalAd.price + (stdOutAd.price * 9));
+  });
+
+  it('CheckoutCalculator should do 5 for 4 deals on stand out and discount premium for MYER', () => {
+    // setup
+    let calculator = new CheckoutCalculator();
+    let cart = new ShoppingCart();
+
+    // axilCoffeeRoasters customer type is of id 13
+    let customer = CUSTOMERS.find(c => c.id === 14)!;
+    cart.setCustomer(customer);
+
+    cart.addAdvertisement(normalAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+
+    cart.addAdvertisement(stdOutAd);
+
+    cart.addAdvertisement(premiumAd);
+    cart.addAdvertisement(premiumAd);
+
+    // act
+    let total = calculator.total(cart);
+
+    // assert
+    let totalPriceAssert = Math.round((normalAd.price + (stdOutAd.price * 9) + (389.99 * 2)) * 100) / 100;
+    expect(total).toEqual(totalPriceAssert);
   });
 });
