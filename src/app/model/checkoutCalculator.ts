@@ -20,7 +20,8 @@ export class CheckoutConfig {
     this.customerPromotions.push(customerPromotion);
   }
 
-  getPromotionForCustomer(customerId: number) : CheckoutConfigCustomerPromotion | undefined {
+  getPromotionForCustomer(customerId: number | undefined) : CheckoutConfigCustomerPromotion | undefined {
+    if (customerId === undefined) return undefined;
     return this.customerPromotions.find(prom => prom.customerId === customerId);
   }
 
@@ -37,6 +38,10 @@ export class CheckoutCalculator {
   }
 
   total(cart: ShoppingCart) : number {
-    return 0;
+    let total = 0;
+    cart.advertisements.forEach(element => {
+      total += element.price;
+    });
+    return total;
   }
 }
