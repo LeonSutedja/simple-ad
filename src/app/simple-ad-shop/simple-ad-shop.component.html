@@ -11,25 +11,32 @@
    <h4>Customer Selected: {{shoppingCart.customer?.name}}</h4>
  </div>
 
- <div class="grid grid-pad" *ngIf="hasCustomerSelected">
-  <div (click)="addAdvertisement(advert.id)" class="module customer col-1-4" *ngFor="let advert of advertisements" >
-    <h4>{{advert.name}}</h4>
-    <span>${{advert.price}}</span>
-  </div>
-
-  <div *ngIf="showShoppingCart" class="col-4-4">
-    <h4>Shopping Cart:</h4>
-    <div class="shopping-cart">
-      <div *ngFor="let ad of shoppingCart.advertisements; let i = index" class="shopping-cart-card">
-        <span class="information">{{ad.price}}, {{ad.name}}</span>
-        <span class="delete-btn" (click)="removeAdvertisement(i)">[delete]</span>
-      </div>
+ <div *ngIf="showShoppingCart" class="col-4-4">
+  <h4>Shopping Cart:</h4>
+  <div class="shopping-cart">
+    <div *ngFor="let ad of shoppingCart.advertisements; let i = index" class="shopping-cart-card">
+      <span class="information">{{ad.price}}, {{ad.name}}</span>
+      <span class="delete-btn" *ngIf="!showCheckout" (click)="removeAdvertisement(i)">[delete]</span>
     </div>
- </div>
+  </div>
+</div>
 
- <div *ngIf="showShoppingCart" class="col-1-4">
-   <button>Checkout</button>
- </div>
+<div *ngIf="showShoppingCart" class="col-1-4">
+ <button (click)="checkout()">Checkout</button>
+</div>
 
+<div *ngIf="showCheckout" class="col-4-4">
+  <div>Total: $11.11</div>
+</div>
+
+
+ <div class="col-4-4" *ngIf="hasCustomerSelected && !showCheckout">
+   <h4>Add Advertisement to Cart:</h4>
+  <div (click)="addAdvertisement(advert.id)" class="col-1-4" *ngFor="let advert of advertisements" >
+    <div class="module customer">
+      <h4>{{advert.name}}</h4>
+      <span>${{advert.price}}</span>
+    </div>
+   </div>
  </div>
 

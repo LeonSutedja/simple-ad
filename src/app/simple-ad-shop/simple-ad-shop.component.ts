@@ -18,6 +18,8 @@ export class SimpleAdShopComponent implements OnInit {
   shoppingCart: ShoppingCart = new ShoppingCart();
   showShoppingCart: boolean = false;
 
+  showCheckout: boolean = false;
+
   constructor(
     private customerService: CustomerService,
     private advertisementService: AdvertisementService,
@@ -44,6 +46,7 @@ export class SimpleAdShopComponent implements OnInit {
     this.hasCustomerSelected = false;
     this.shoppingCart.empty();
     this.showShoppingCart = false;
+    this.showCheckout = false;
   }
 
   addAdvertisement(id: number): void {
@@ -58,5 +61,9 @@ export class SimpleAdShopComponent implements OnInit {
   removeAdvertisement(index: number): void {
     this.shoppingCart.removeAdvertisement(index);
     console.log("remove from cart");
+  }
+
+  checkout() : void {
+    this.showCheckout = true;
   }
 }
