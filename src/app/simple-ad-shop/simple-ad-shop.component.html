@@ -1,0 +1,35 @@
+ <button (click)="reset()">Reset</button>
+ <div class="grid grid-pad" *ngIf="!hasCustomerSelected">
+  <a *ngFor="let cust of customers" class="col-1-4" (click)="selectCustomer(cust.id)">
+    <div class="module customer">
+      <h4>{{cust.name}}</h4>
+    </div>
+  </a>
+ </div>
+
+ <div *ngIf="hasCustomerSelected">
+   <h4>Customer Selected: {{shoppingCart.customer?.name}}</h4>
+ </div>
+
+ <div class="grid grid-pad" *ngIf="hasCustomerSelected">
+  <div (click)="addAdvertisement(advert.id)" class="module customer col-1-4" *ngFor="let advert of advertisements" >
+    <h4>{{advert.name}}</h4>
+    <span>${{advert.price}}</span>
+  </div>
+
+  <div *ngIf="showShoppingCart" class="col-4-4">
+    <h4>Shopping Cart:</h4>
+    <div class="shopping-cart">
+      <div *ngFor="let ad of shoppingCart.advertisements; let i = index" class="shopping-cart-card">
+        <span class="information">{{ad.price}}, {{ad.name}}</span>
+        <span class="delete-btn" (click)="removeAdvertisement(i)">[delete]</span>
+      </div>
+    </div>
+ </div>
+
+ <div *ngIf="showShoppingCart" class="col-1-4">
+   <button>Checkout</button>
+ </div>
+
+ </div>
+
