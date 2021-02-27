@@ -32,7 +32,6 @@ describe('CheckoutService', () => {
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
 
-    // default customer type is of id 11
     let customer = CUSTOMERS.find(c => c.id === 11)!;
     cart.setCustomer(customer);
 
@@ -54,7 +53,6 @@ describe('CheckoutService', () => {
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
 
-    // axilCoffeeRoasters customer type is of id 13
     let customer = CUSTOMERS.find(c => c.id === 13)!;
     cart.setCustomer(customer);
 
@@ -76,7 +74,6 @@ describe('CheckoutService', () => {
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
 
-    // axilCoffeeRoasters customer type is of id 13
     let customer = CUSTOMERS.find(c => c.id === 14)!;
     cart.setCustomer(customer);
 
@@ -99,7 +96,6 @@ describe('CheckoutService', () => {
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
 
-    // axilCoffeeRoasters customer type is of id 13
     let customer = CUSTOMERS.find(c => c.id === 14)!;
     cart.setCustomer(customer);
 
@@ -130,7 +126,6 @@ describe('CheckoutService', () => {
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
 
-    // axilCoffeeRoasters customer type is of id 13
     let customer = CUSTOMERS.find(c => c.id === 14)!;
     cart.setCustomer(customer);
 
@@ -157,6 +152,28 @@ describe('CheckoutService', () => {
 
     // assert
     let totalPriceAssert = Math.round((normalAd.price + (stdOutAd.price * 9) + (389.99 * 2)) * 100) / 100;
+    expect(total).toEqual(totalPriceAssert);
+  });
+
+  it('CheckoutCalculator should do 3 for 2 deals on classic ads for SecondBite', () => {
+    // setup
+    let calculator = new CheckoutCalculator();
+    let cart = new ShoppingCart();
+
+    let customer = CUSTOMERS.find(c => c.id === 12)!;
+    cart.setCustomer(customer);
+
+    cart.addAdvertisement(normalAd);
+    cart.addAdvertisement(normalAd);
+    cart.addAdvertisement(normalAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(premiumAd);
+
+    // act
+    let total = calculator.total(cart);
+
+    // assert
+    let totalPriceAssert = Math.round(((normalAd.price * 2) + (stdOutAd.price * 1) + (premiumAd.price * 1)) * 100) / 100;
     expect(total).toEqual(totalPriceAssert);
   });
 });

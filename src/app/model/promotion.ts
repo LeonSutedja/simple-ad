@@ -1,7 +1,5 @@
 import { Advertisement } from "./advertisement";
 
-
-
 export interface IPromotion {
   readonly code: string;
   readonly description: string;
@@ -14,7 +12,26 @@ export class ThreeForTwoClassicAdsDeal implements IPromotion {
   readonly code = "3FOR2CLASSIC"
   readonly description = "Gets a 3 for 2 deal on Classic Ads";
   calculateAdvertisement(advertisementList: Advertisement[]): [number, Advertisement[]] {
-    return [0, advertisementList];
+    const classicAdId = 11;
+    const ads = advertisementList.filter((obj) => obj.id === classicAdId);
+    const adsCount = ads.length;
+    if (adsCount < 3)
+      return [0, advertisementList];
+
+    // 3 for 2 deal
+    const adsCountForDeal = Math.floor(adsCount/3);
+    const adsPrice = ads[0].price;
+    const totalPriceOfAdsCountWithDeal = adsCountForDeal * 2 * adsPrice;
+    let countAdsToBeRemoved = adsCountForDeal * 3;
+    advertisementList = advertisementList.reduce(function(a : Advertisement[], e : Advertisement, i) {
+        if ((e.id === classicAdId) && (countAdsToBeRemoved > 0)) {
+          countAdsToBeRemoved--;
+        } else {
+          a.push(e)
+        }
+        return a;
+    }, []);
+    return [totalPriceOfAdsCountWithDeal, advertisementList];
   }
 }
 
@@ -23,23 +40,25 @@ export class FiveForFourStandOutAdsDeal implements IPromotion {
   readonly description = "Gets a 5 for 4 deal on Stand out Ads";
   calculateAdvertisement(advertisementList: Advertisement[]): [number, Advertisement[]] {
     const standoutAdId = 12;
-    const standoutAds = advertisementList.filter((obj) => obj.id === standoutAdId);
-    const standoutAdsCount = standoutAds.length;
-    if (standoutAdsCount < 5)
+    const ads = advertisementList.filter((obj) => obj.id === standoutAdId);
+    const adsCount = ads.length;
+    if (adsCount < 3)
       return [0, advertisementList];
-    const standoutAdsCountForDeal = Math.floor(standoutAdsCount/5);
-    const standoutAdsPrice = standoutAds[0].price;
-    const totalPriceOfStandoutAdsCountWithDeal = standoutAdsCountForDeal * (standoutAdsPrice * 4);
-    let countStdOutAdsToBeRemoved = standoutAdsCountForDeal * 5;
+
+    // 5 for 4 deal
+    const adsCountForDeal = Math.floor(adsCount/5);
+    const adsPrice = ads[0].price;
+    const totalPriceOfAdsCountWithDeal = adsCountForDeal * 4 * adsPrice;
+    let countAdsToBeRemoved = adsCountForDeal * 5;
     advertisementList = advertisementList.reduce(function(a : Advertisement[], e : Advertisement, i) {
-        if ((e.id === standoutAdId) && (countStdOutAdsToBeRemoved > 0)) {
-          countStdOutAdsToBeRemoved--;
+        if ((e.id === standoutAdId) && (countAdsToBeRemoved > 0)) {
+          countAdsToBeRemoved--;
         } else {
           a.push(e)
         }
         return a;
     }, []);
-    return [totalPriceOfStandoutAdsCountWithDeal, advertisementList];
+    return [totalPriceOfAdsCountWithDeal, advertisementList];
   }
 }
 
