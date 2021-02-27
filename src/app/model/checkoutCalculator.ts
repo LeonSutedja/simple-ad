@@ -1,3 +1,4 @@
+import { PROMOTIONS } from "./promotion";
 import { ShoppingCart } from "./shoppingCart";
 
 export class CheckoutConfigCustomerPromotion {
@@ -39,7 +40,15 @@ export class CheckoutCalculator {
 
   total(cart: ShoppingCart) : number {
     let total = 0;
-    cart.advertisements.forEach(element => {
+    const customerPromotion = this.config.getPromotionForCustomer(cart.customer!.id);
+    let advertisementList = cart.advertisements;
+    customerPromotion?.promotionCodesApplicable.forEach(code => {
+      let promotion = PROMOTIONS.find(p => p.code === code)!;
+      let promotionTotal = 0;
+      [promotionTotal, advertisementList] = promotion.calculateAdvertisement(advertisementList);
+      total += promotionTotal;
+    });
+    advertisementList.forEach(element => {
       total += element.price;
     });
     return total;

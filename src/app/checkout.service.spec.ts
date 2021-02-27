@@ -45,4 +45,29 @@ describe('CheckoutService', () => {
     // assert
     expect(total).toEqual(normalAd.price + (stdOutAd.price * 3) + premiumAd.price);
   });
+
+  it('CheckoutCalculator should discount standout advertisements for axilCoffeeRoasters', () => {
+    // setup
+    let calculator = new CheckoutCalculator();
+    let cart = new ShoppingCart();
+
+    // axilCoffeeRoasters customer type is of id 13
+    let customer = CUSTOMERS.find(c => c.id === 13)!;
+    cart.setCustomer(customer);
+
+    let normalAd = ADVERTISEMENTS.find(ad => ad.id === 11)!;
+    let stdOutAd = ADVERTISEMENTS.find(ad => ad.id === 12)!;
+    let premiumAd = ADVERTISEMENTS.find(ad => ad.id === 13)!;
+    cart.addAdvertisement(normalAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(premiumAd);
+
+    // act
+    let total = calculator.total(cart);
+
+    // assert
+    expect(total).toEqual(normalAd.price + (299.99 * 3) + premiumAd.price);
+  });
 });
