@@ -1,8 +1,8 @@
 import { Customer } from '../model/customer';
 
 export const CUSTOMERS: Customer[] = [
-  { id: 11, name: 'default' },
-  { id: 12, name: 'Second Bite' },
-  { id: 13, name: 'Axil Coffee Roasters' },
-  { id: 14, name: 'MYER' }
+  Customer.new(11, 'default'),
+  Customer.new(12, 'Second Bite'),
+  Customer.new(13, 'Axil Coffee Roasters'),
+  Customer.new(14, 'MYER')
 ];
