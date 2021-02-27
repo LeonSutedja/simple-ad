@@ -2,8 +2,8 @@ import { PROMOTIONS } from "./promotion";
 import { ShoppingCart } from "./shoppingCart";
 
 export class CheckoutConfigCustomerPromotion {
-  customerId: number = -1;
-  promotionCodesApplicable: string[] = [];
+  readonly customerId: number;
+  readonly promotionCodesApplicable: string[];
 
   constructor(customerId: number, promotionCodesApplicable: string[]) {
     this.customerId = customerId;
@@ -12,9 +12,17 @@ export class CheckoutConfigCustomerPromotion {
 }
 
 export class CheckoutConfig {
+  static new(configTuples : [number, string[]][]): CheckoutConfig {
+    let checkoutConfig = new CheckoutConfig();
+    configTuples.forEach(config => {
+      checkoutConfig.addCustomerPromotionConfig(new CheckoutConfigCustomerPromotion(config[0], config[1]));
+    });
+    return checkoutConfig;
+  }
+
   customerPromotions: CheckoutConfigCustomerPromotion[] = []
 
-  constructor() {
+  private constructor() {
   }
 
   addCustomerPromotionConfig(customerPromotion: CheckoutConfigCustomerPromotion) : void {
@@ -28,14 +36,17 @@ export class CheckoutConfig {
 
 }
 
-export class CheckoutCalculator {
-  config: CheckoutConfig;
+export const DEFAULTCONFIG: CheckoutConfig = CheckoutConfig.new([
+  [12, ["3FOR2CLASSIC"]],
+  [13, ["DISCSTANDOUT"]],
+  [14, ["5FOR4STANDOUT", "DISCPREMIUM"]]
+]);
 
-  constructor() {
-    this.config = new CheckoutConfig();
-    this.config.addCustomerPromotionConfig(new CheckoutConfigCustomerPromotion(12, ["3FOR2CLASSIC"]))
-    this.config.addCustomerPromotionConfig(new CheckoutConfigCustomerPromotion(13, ["DISCSTANDOUT"]))
-    this.config.addCustomerPromotionConfig(new CheckoutConfigCustomerPromotion(14, ["5FOR4STANDOUT", "DISCPREMIUM"]))
+export class CheckoutCalculator {
+  private config: CheckoutConfig;
+
+  constructor(config: CheckoutConfig = DEFAULTCONFIG) {
+    this.config = config;
   }
 
   total(cart: ShoppingCart) : number {
