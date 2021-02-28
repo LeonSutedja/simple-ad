@@ -3,8 +3,8 @@ export class Customer {
     return new Customer(id, name);
   }
 
-  id: number;
-  name: string;
+  readonly id: number;
+  readonly name: string;
 
   private constructor(id: number, name: string)
   {

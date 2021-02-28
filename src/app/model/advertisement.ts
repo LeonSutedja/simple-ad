@@ -4,10 +4,10 @@ export class Advertisement {
     return new Advertisement(id, name, description, price);
   }
 
-  id: number;
-  name: string;
-  description: string;
-  price: number;
+  readonly id: number;
+  readonly name: string;
+  readonly description: string;
+  readonly price: number;
 
   private constructor(id: number, name: string, description: string, price: number)
   {

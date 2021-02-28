@@ -6,6 +6,7 @@ import { ADVERTISEMENTS } from './data/mock-advertisement';
 import { CUSTOMERS } from './data/mock-customers';
 import { Advertisement } from './model/advertisement';
 import { CheckoutCalculator } from './model/checkoutCalculator';
+import { Customer } from './model/customer';
 import { ShoppingCart } from './model/shoppingCart';
 
 describe('CheckoutService', () => {
@@ -14,6 +15,12 @@ describe('CheckoutService', () => {
   let stdOutAd: Advertisement;
   let premiumAd: Advertisement;
 
+  let defaultCustomer: Customer;
+  let secondBite: Customer;
+  let axilCoffeeRoasters: Customer;
+  let myer: Customer;
+  let seek: Customer;
+
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(CheckoutService);
@@ -21,10 +28,35 @@ describe('CheckoutService', () => {
     normalAd = ADVERTISEMENTS.find(ad => ad.id === 11)!;
     stdOutAd = ADVERTISEMENTS.find(ad => ad.id === 12)!;
     premiumAd = ADVERTISEMENTS.find(ad => ad.id === 13)!;
+
+    defaultCustomer = CUSTOMERS.find(ad => ad.id === 11)!;
+    secondBite = CUSTOMERS.find(ad => ad.id === 12)!;
+    axilCoffeeRoasters = CUSTOMERS.find(ad => ad.id === 13)!;
+    myer = CUSTOMERS.find(ad => ad.id === 14)!;
+    seek = CUSTOMERS.find(ad => ad.id === 15)!;
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('CheckoutCalculator GetAppliedPromotion should return applied promotions for customer', () => {
+    // setup
+    let calculator = new CheckoutCalculator();
+    let cart = new ShoppingCart();
+
+    let customer = secondBite;
+    cart.setCustomer(customer);
+
+    cart.addAdvertisement(normalAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(premiumAd);
+
+    // act
+    let appliedPromotions = calculator.getCustomerPromotion(cart);
+
+    // assert
+    expect(appliedPromotions.length).toEqual(1);
   });
 
   it('CheckoutCalculator should sum all advertisements for default customer', () => {
@@ -32,7 +64,7 @@ describe('CheckoutService', () => {
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
 
-    let customer = CUSTOMERS.find(c => c.id === 11)!;
+    let customer = defaultCustomer;
     cart.setCustomer(customer);
 
     cart.addAdvertisement(normalAd);
@@ -53,7 +85,7 @@ describe('CheckoutService', () => {
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
 
-    let customer = CUSTOMERS.find(c => c.id === 13)!;
+    let customer = axilCoffeeRoasters;
     cart.setCustomer(customer);
 
     cart.addAdvertisement(normalAd);
@@ -74,7 +106,7 @@ describe('CheckoutService', () => {
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
 
-    let customer = CUSTOMERS.find(c => c.id === 14)!;
+    let customer = myer;
     cart.setCustomer(customer);
 
     cart.addAdvertisement(normalAd);
@@ -96,7 +128,7 @@ describe('CheckoutService', () => {
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
 
-    let customer = CUSTOMERS.find(c => c.id === 14)!;
+    let customer = myer;
     cart.setCustomer(customer);
 
     cart.addAdvertisement(normalAd);
@@ -127,7 +159,7 @@ describe('CheckoutService', () => {
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
 
-    let customer = CUSTOMERS.find(c => c.id === 14)!;
+    let customer = myer;
     cart.setCustomer(customer);
 
     cart.addAdvertisement(normalAd);
@@ -161,7 +193,7 @@ describe('CheckoutService', () => {
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
 
-    let customer = CUSTOMERS.find(c => c.id === 12)!;
+    let customer = secondBite;
     cart.setCustomer(customer);
 
     cart.addAdvertisement(normalAd);
@@ -183,7 +215,7 @@ describe('CheckoutService', () => {
     let calculator = new CheckoutCalculator();
     let cart = new ShoppingCart();
 
-    let customer = CUSTOMERS.find(c => c.id === 15)!;
+    let customer = seek;
     cart.setCustomer(customer);
 
     cart.addAdvertisement(normalAd);
