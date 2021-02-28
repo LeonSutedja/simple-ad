@@ -39,7 +39,8 @@ export class CheckoutConfig {
 export const DEFAULTCONFIG: CheckoutConfig = CheckoutConfig.new([
   [12, ["3FOR2CLASSIC"]],
   [13, ["DISCSTANDOUT"]],
-  [14, ["5FOR4STANDOUT", "DISCPREMIUM"]]
+  [14, ["5FOR4STANDOUT", "DISCPREMIUM"]],
+  [15, ["DISCFOURTYPERCENT"]],
 ]);
 
 export class CheckoutCalculator {
@@ -62,6 +63,7 @@ export class CheckoutCalculator {
     advertisementList.forEach(element => {
       total += element.price;
     });
+    total = Math.round(total * 100)/100;
     return total;
   }
 

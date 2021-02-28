@@ -118,7 +118,8 @@ describe('CheckoutService', () => {
     let total = calculator.total(cart);
 
     // assert
-    expect(total).toEqual(normalAd.price + (stdOutAd.price * 9));
+    let totalPriceAssert = Math.round((normalAd.price + (stdOutAd.price * 9)) * 100) / 100;
+    expect(total).toEqual(totalPriceAssert);
   });
 
   it('CheckoutCalculator should do 5 for 4 deals on stand out and discount premium for MYER', () => {
@@ -174,6 +175,28 @@ describe('CheckoutService', () => {
 
     // assert
     let totalPriceAssert = Math.round(((normalAd.price * 2) + (stdOutAd.price * 1) + (premiumAd.price * 1)) * 100) / 100;
+    expect(total).toEqual(totalPriceAssert);
+  });
+
+  it('CheckoutCalculator should do fourty percent discount on all ads for SEEK', () => {
+    // setup
+    let calculator = new CheckoutCalculator();
+    let cart = new ShoppingCart();
+
+    let customer = CUSTOMERS.find(c => c.id === 15)!;
+    cart.setCustomer(customer);
+
+    cart.addAdvertisement(normalAd);
+    cart.addAdvertisement(normalAd);
+    cart.addAdvertisement(normalAd);
+    cart.addAdvertisement(stdOutAd);
+    cart.addAdvertisement(premiumAd);
+
+    // act
+    let total = calculator.total(cart);
+
+    // assert
+    let totalPriceAssert = Math.round(((normalAd.price * 3) + (stdOutAd.price * 1) + (premiumAd.price * 1)) * 100 * 0.6) / 100;
     expect(total).toEqual(totalPriceAssert);
   });
 });

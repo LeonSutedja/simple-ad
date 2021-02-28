@@ -89,10 +89,24 @@ export class PremiumAdsDiscount implements IPromotion {
     return [total, advertisementList];
   }
 }
+
+export class FourtyPercentDiscountOnAll implements IPromotion {
+  readonly code = "DISCFOURTYPERCENT"
+  readonly description = "Gets a discount of 40% on all ads";
+  calculateAdvertisement(advertisementList: Advertisement[]): [number, Advertisement[]] {
+    let total = 0;
+    advertisementList.forEach(element => {
+      total += element.price;
+    });
+    total = total * 0.6;
+    return [total, []];
+  }
+}
  // poor man DI contianer for IPromotion List
 export const PROMOTIONS: IPromotion[] = [
   new ThreeForTwoClassicAdsDeal(),
   new FiveForFourStandOutAdsDeal(),
   new StandOutAdsDiscount(),
   new PremiumAdsDiscount(),
+  new FourtyPercentDiscountOnAll()
 ];
