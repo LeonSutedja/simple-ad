@@ -19,7 +19,7 @@ describe('SimpleAdShopComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
@@ -32,6 +32,7 @@ describe('SimpleAdShopComponent', () => {
     component.hasCustomerSelected = true;
     component.showShoppingCart = true;
     component.showCheckout = true;
+    component.total = 1.90;
     component.reset();
     expect(component.showShoppingCart).toBeFalse();
     expect(component.hasCustomerSelected).toBeFalse();
@@ -39,5 +40,33 @@ describe('SimpleAdShopComponent', () => {
     expect(component.shoppingCart.advertisements).toEqual([]);
     expect(component.showCheckout).toBeFalse();
     expect(component.appliedPromotions).toEqual([]);
+    expect(component.total).toEqual(0.00);
+  });
+
+  it('select customer should set hasCustomerSelected', () => {
+    component.selectCustomer(11);
+    expect(component.shoppingCart.customer).toBeTruthy();
+    expect(component.hasCustomerSelected).toBeTrue();
+  });
+
+  it('add advertisement should set show shopping cart, and add advertisement to shopping cart', () => {
+    component.addAdvertisement(11);
+    expect(component.shoppingCart.advertisements.length).toBeGreaterThan(0);
+    expect(component.showShoppingCart).toBeTrue();
+  });
+
+  it('remove advertisement should remove advertisement', () => {
+    component.addAdvertisement(11);
+    component.removeAdvertisement(0);
+    expect(component.shoppingCart.advertisements.length).toEqual(0);
+    expect(component.showShoppingCart).toBeTrue();
+  });
+
+  it('checkout should show checkout', () => {
+    component.selectCustomer(11);
+    component.addAdvertisement(11);
+    component.checkout();
+    expect(component.showCheckout).toBeTrue();
+    expect(component.total).toBeTruthy();
   });
 });

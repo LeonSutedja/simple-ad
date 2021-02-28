@@ -41,7 +41,6 @@ export class SimpleAdShopComponent implements OnInit {
   }
 
   selectCustomer(id: number): void {
-    console.log("select customer");
     this.customerService.getCustomer(id)
       .pipe(first())
       .subscribe(cust => {
@@ -56,6 +55,7 @@ export class SimpleAdShopComponent implements OnInit {
     this.showShoppingCart = false;
     this.showCheckout = false;
     this.appliedPromotions = [];
+    this.total = 0.00;
   }
 
   addAdvertisement(id: number): void {
@@ -66,12 +66,10 @@ export class SimpleAdShopComponent implements OnInit {
         this.shoppingCart.addAdvertisement(ad);
         this.showShoppingCart = true;
     });
-    console.log("add to cart");
   }
 
   removeAdvertisement(index: number): void {
     this.shoppingCart.removeAdvertisement(index);
-    console.log("remove from cart");
   }
 
   checkout() : void {
