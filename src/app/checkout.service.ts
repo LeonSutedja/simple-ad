@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CheckoutCalculator, DEFAULTCONFIG } from './model/checkoutCalculator';
+import { CheckoutCalculator } from './model/checkoutCalculator';
+import { DEFAULTCONFIG } from './model/checkoutConfig';
 import { IPromotion } from './model/promotion';
 import { ShoppingCart } from './model/shoppingCart';
 
@@ -9,6 +10,7 @@ import { ShoppingCart } from './model/shoppingCart';
 export class CheckoutService {
   private checkoutCalculator: CheckoutCalculator;
   constructor() {
+    // get a new config here
     this.checkoutCalculator = new CheckoutCalculator(DEFAULTCONFIG);
   }
 

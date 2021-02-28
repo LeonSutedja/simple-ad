@@ -31,10 +31,13 @@ describe('SimpleAdShopComponent', () => {
   it('reset should set everything to the beginning', () => {
     component.hasCustomerSelected = true;
     component.showShoppingCart = true;
+    component.showCheckout = true;
     component.reset();
     expect(component.showShoppingCart).toBeFalse();
     expect(component.hasCustomerSelected).toBeFalse();
     expect(component.shoppingCart.customer).toBeUndefined();
     expect(component.shoppingCart.advertisements).toEqual([]);
+    expect(component.showCheckout).toBeFalse();
+    expect(component.appliedPromotions).toEqual([]);
   });
 });
