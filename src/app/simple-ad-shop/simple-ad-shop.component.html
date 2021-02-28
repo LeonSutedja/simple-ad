@@ -15,7 +15,7 @@
   <h4>Shopping Cart:</h4>
   <div class="shopping-cart">
     <div *ngFor="let ad of shoppingCart.advertisements; let i = index" class="shopping-cart-card">
-      <span class="information">{{ad.price}}, {{ad.name}}</span>
+      <span [ngClass]="{'information' : !showCheckout, 'informationCheckout': showCheckout}" class="information">{{ad.price}}, {{ad.name}}</span>
       <span class="delete-btn" *ngIf="!showCheckout" (click)="removeAdvertisement(i)">[delete]</span>
     </div>
   </div>
@@ -26,7 +26,13 @@
 </div>
 
 <div *ngIf="showCheckout" class="col-4-4">
-  <div>Total: $11.11</div>
+  <h4>Total: ${{total}}</h4>
+  <div *ngIf='appliedPromotions.length > 0'>
+    <h4>Promotions:</h4>
+    <ul *ngFor="let promotion of appliedPromotions">
+      <li>{{promotion.description}}</li>
+    </ul>
+  </div>
 </div>
 
 

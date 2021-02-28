@@ -78,7 +78,7 @@ export class StandOutAdsDiscount implements IPromotion {
 
 export class PremiumAdsDiscount implements IPromotion {
   readonly code = "DISCPREMIUM"
-  readonly description = "- Gets a discount on Premium Ads where the price drops to $389.99 per ad";
+  readonly description = "Gets a discount on Premium Ads where the price drops to $389.99 per ad";
   calculateAdvertisement(advertisementList: Advertisement[]): [number, Advertisement[]] {
     const premiumAdId = 13;
     const premiumAdsCount = advertisementList.filter((obj) => obj.id === premiumAdId).length;

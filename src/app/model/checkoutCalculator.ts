@@ -1,4 +1,4 @@
-import { PROMOTIONS } from "./promotion";
+import { IPromotion, PROMOTIONS } from "./promotion";
 import { ShoppingCart } from "./shoppingCart";
 
 export class CheckoutConfigCustomerPromotion {
@@ -63,5 +63,15 @@ export class CheckoutCalculator {
       total += element.price;
     });
     return total;
+  }
+
+  getCustomerPromotion(cart: ShoppingCart): IPromotion[] {
+    const customerPromotion = this.config.getPromotionForCustomer(cart.customer!.id);
+    let promotions :  IPromotion[] = [];
+    customerPromotion?.promotionCodesApplicable.forEach(code => {
+      let promotion = PROMOTIONS.find(p => p.code === code)!;
+      promotions.push(promotion)
+    });
+    return promotions;
   }
 }

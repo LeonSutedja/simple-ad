@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AdvertisementService } from '../advertisement.service';
+import { CheckoutService } from '../checkout.service';
 import { CustomerService } from '../customer.service';
 import { Advertisement } from '../model/advertisement';
 import { Customer } from '../model/customer';
+import { IPromotion } from '../model/promotion';
 import { ShoppingCart } from '../model/shoppingCart';
 
 @Component({
@@ -19,10 +21,13 @@ export class SimpleAdShopComponent implements OnInit {
   showShoppingCart: boolean = false;
 
   showCheckout: boolean = false;
+  appliedPromotions: IPromotion[] = [];
+  total: number = 0.00;
 
   constructor(
     private customerService: CustomerService,
     private advertisementService: AdvertisementService,
+    private checkoutService: CheckoutService
     ) { }
 
   ngOnInit(): void {
@@ -47,6 +52,7 @@ export class SimpleAdShopComponent implements OnInit {
     this.shoppingCart.empty();
     this.showShoppingCart = false;
     this.showCheckout = false;
+    this.appliedPromotions = [];
   }
 
   addAdvertisement(id: number): void {
@@ -65,5 +71,7 @@ export class SimpleAdShopComponent implements OnInit {
 
   checkout() : void {
     this.showCheckout = true;
+    this.appliedPromotions = this.checkoutService.getAppliedPromotion(this.shoppingCart);
+    this.total = this.checkoutService.calculateCart(this.shoppingCart);
   }
 }
