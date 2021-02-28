@@ -6,6 +6,7 @@ import { Advertisement } from '../model/advertisement';
 import { Customer } from '../model/customer';
 import { IPromotion } from '../model/promotion';
 import { ShoppingCart } from '../model/shoppingCart';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-simple-ad-shop',
@@ -31,19 +32,21 @@ export class SimpleAdShopComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.customerService.getCustomers().subscribe(custList => this.customers = custList);
-    this.advertisementService.getAdvertisements().subscribe(list => this.advertisements = list);
+    this.customerService.getCustomers()
+      .pipe(first())
+      .subscribe(list => this.customers = list);
+    this.advertisementService.getAdvertisements()
+      .pipe(first())
+      .subscribe(list => this.advertisements = list);
   }
 
   selectCustomer(id: number): void {
     console.log("select customer");
-    this.customerService.getCustomer(id).subscribe(cust => {
-      if (cust != undefined)
-      {
-        this.shoppingCart.setCustomer(cust);
+    this.customerService.getCustomer(id)
+      .pipe(first())
+      .subscribe(cust => {
+        this.shoppingCart.setCustomer(cust!);
         this.hasCustomerSelected = true;
-      }
-      // TODO: if cust return undefined, i.e customer not found
     });
   }
 
@@ -56,7 +59,9 @@ export class SimpleAdShopComponent implements OnInit {
   }
 
   addAdvertisement(id: number): void {
-    this.advertisementService.getAdvertisement(id).subscribe(ad => {
+    this.advertisementService.getAdvertisement(id)
+    .pipe(first())
+    .subscribe(ad => {
       if (ad != undefined)
         this.shoppingCart.addAdvertisement(ad);
         this.showShoppingCart = true;

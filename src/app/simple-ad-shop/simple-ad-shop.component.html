@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<div *ngIf="showShoppingCart" class="col-1-4">
+<div *ngIf="showShoppingCart && !showCheckout" class="col-1-4">
  <button (click)="checkout()">Checkout</button>
 </div>
 
@@ -34,7 +34,6 @@
     </ul>
   </div>
 </div>
-
 
  <div class="col-4-4" *ngIf="hasCustomerSelected && !showCheckout">
    <h4>Add Advertisement to Cart:</h4>
