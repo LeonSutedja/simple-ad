@@ -36,6 +36,7 @@ export class CheckoutConfig {
 
 }
 
+// Current config is hard coded for the purpose of this demo. This however, can be easily updated to retrieve the config from JSON
 export const DEFAULTCONFIG: CheckoutConfig = CheckoutConfig.new([
   [12, ["3FOR2CLASSIC"]],
   [13, ["DISCSTANDOUT"]],
